@@ -1,0 +1,78 @@
+.page { padding: 24px 20px 40px; max-width: 600px; margin: 0 auto; }
+
+.standingLabel {
+  display: inline-block; padding: 5px 14px;
+  border-radius: var(--radius-full);
+  background: var(--bg3); border: 1px solid rgba(255,255,255,0.06);
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.2em;
+  margin-bottom: 24px;
+}
+
+/* Score ring */
+.ringWrap {
+  width: 220px; height: 220px; margin: 0 auto 8px;
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ringInner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.scoreNum { font-size: 56px; font-weight: 900; letter-spacing: -2px; color: var(--text); }
+.scoreStatus { font-size: 14px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--secondary); margin-top: 2px; }
+.glowBg {
+  position: absolute; width: 160px; height: 160px;
+  background: rgba(255,122,0,0.12); blur: 60px;
+  border-radius: 50%; z-index: -1;
+  filter: blur(40px);
+}
+
+.desc { font-size: 13px; color: var(--text4); text-align: center; max-width: 280px; margin: 16px auto 32px; line-height: 1.7; }
+
+/* Calibration card */
+.calibCard { border-radius: var(--radius-xl); padding: 20px; margin-bottom: 24px; }
+.calibHeader { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.calibHeader .material-symbols-outlined { color: var(--primary-c); font-size: 20px; }
+.calibTitle { font-size: 16px; font-weight: 800; }
+.calibRow { display: flex; flex-direction: column; gap: 14px; }
+.calibItem { display: flex; align-items: flex-start; gap: 12px; }
+.calibIcon {
+  width: 40px; height: 40px; border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.calibIcon .material-symbols-outlined { font-size: 20px; }
+.calibVal { font-size: 14px; font-weight: 700; color: var(--text); }
+.calibDesc { font-size: 12px; color: var(--text4); line-height: 1.5; margin-top: 2px; }
+
+/* Flux */
+.fluxLabel {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.2em; color: rgba(221,194,162,0.6);
+  margin-bottom: 12px; padding: 0 4px;
+}
+.fluxList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+.fluxItem {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; border-radius: var(--radius-xl);
+}
+.fluxLeft { display: flex; align-items: center; gap: 14px; }
+.fluxDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.fluxName { font-size: 14px; font-weight: 600; color: var(--text); }
+.fluxSub { font-size: 10px; font-weight: 700; color: rgba(221,194,162,0.5); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+.fluxDelta { font-size: 15px; font-weight: 800; }
+.empty { font-size: 13px; color: var(--text4); padding: 8px 4px; }
+
+/* Shadow Persistence */
+.shadowCard {
+  border-radius: 20px; padding: 32px 24px; text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 16px;
+}
+.shadowIcon { font-size: 40px; color: var(--secondary); margin-bottom: 14px; }
+.shadowIcon .material-symbols-outlined { font-size: 40px; }
+.shadowTitle { font-size: 20px; font-weight: 800; margin-bottom: 10px; }
+.shadowDesc { font-size: 13px; color: var(--text4); line-height: 1.7; margin-bottom: 20px; }
+.rotateBtn { padding: 12px 28px; border-radius: var(--radius-full); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+
+.state { font-size: 13px; color: var(--text4); text-align: center; padding: 40px 0; }

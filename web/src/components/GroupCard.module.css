@@ -1,0 +1,78 @@
+.card {
+  background: var(--bg4);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.card:hover { background: #252424; }
+
+.alertBar {
+  background: rgba(147,0,10,0.3);
+  border: 1px solid #ffb4ab;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  color: #ffb4ab;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  padding: 4px;
+  margin: -20px -20px 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.topRow { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+
+.name { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); margin-bottom: 3px; }
+
+.locRow {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700;
+  color: var(--text4);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.locRow .material-symbols-outlined { font-size: 13px; color: var(--primary-c); }
+
+.statusBadge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+
+.dot { width: 7px; height: 7px; border-radius: 50%; }
+
+.desc {
+  font-size: 13px; color: var(--text4);
+  line-height: 1.55; margin-bottom: 14px;
+}
+
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.tag {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255,255,255,0.10);
+  font-size: 10px; font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  background: transparent;
+}
+
+.footer { display: flex; align-items: center; justify-content: space-between; }
+
+.membersRow { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--text4); }
+
+.avatarStack { display: flex; }
+.avatarThumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--bg5);
+  border: 2px solid var(--bg4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 700; color: var(--text4);
+  margin-left: -6px;
+}
+.avatarThumb:first-child { margin-left: 0; }
+
+.timeRow { display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--text4); }
+.timeRow .material-symbols-outlined { font-size: 14px; color: var(--primary-c); }
