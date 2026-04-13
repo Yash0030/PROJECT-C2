@@ -112,6 +112,7 @@ import styles from './Layout.module.css';
 export default function Layout() {
   const ghostScore = useSessionStore(s => s.ghostScore);
   const logout     = useSessionStore(s => s.logout);
+  const user       = useSessionStore(s => s.user);
   const navigate   = useNavigate();
 
   const handleLogout = () => {
@@ -124,7 +125,7 @@ export default function Layout() {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.avatar}>
-            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>person</span>
+            <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.id || 'default'}`} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover', background: 'var(--bg6)'}} />
           </div>
           <span className={styles.logo}>ChitChat</span>
         </div>

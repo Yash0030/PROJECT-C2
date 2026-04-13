@@ -65,14 +65,14 @@ router.post('/', requireSession, async (req, res) => {
     const group = rows[0];
 
     // Auto-join creator
+      
 
-
-// Auto-join creator with anonymous name
-const creatorAnonName = generateAnonName();
-await client.query(
-  `INSERT INTO group_members (group_id, user_id, anon_name, is_creator) VALUES ($1,$2,$3,TRUE)`,
-  [group.id, req.user.sub, creatorAnonName]
-);
+        // Auto-join creator with anonymous name
+        const creatorAnonName = generateAnonName();
+        await client.query(
+          `INSERT INTO group_members (group_id, user_id, anon_name, is_creator) VALUES ($1,$2,$3,TRUE)`,
+          [group.id, req.user.sub, creatorAnonName]
+        );
 
     await client.query('COMMIT');
     res.status(201).json(sanitiseGroup(group, req.user.sub));

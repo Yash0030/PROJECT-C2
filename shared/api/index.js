@@ -86,4 +86,5 @@ export const placesApi = {
 export const ghostApi = {
   score:   () => apiClient.get('/ghost/score').then(r => r.data),
   history: () => apiClient.get('/ghost/history').then(r => r.data),
+  rotate:  () => apiClient.post('/ghost/rotate').then(r => r.data),
 };

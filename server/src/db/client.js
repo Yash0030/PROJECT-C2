@@ -50,15 +50,15 @@ async function runMigrations() {
       created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
-CREATE TABLE IF NOT EXISTS group_members (
-  group_id    UUID NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
-  user_id     UUID NOT NULL REFERENCES users(id),
-  anon_name   TEXT NOT NULL DEFAULT 'Anonymous',
-  joined_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  is_creator  BOOLEAN NOT NULL DEFAULT FALSE,
-  is_kicked   BOOLEAN NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (group_id, user_id)
-);
+    CREATE TABLE IF NOT EXISTS group_members (
+      group_id    UUID NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
+      user_id     UUID NOT NULL REFERENCES users(id),
+      anon_name   TEXT NOT NULL DEFAULT 'Anonymous',
+      joined_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      is_creator  BOOLEAN NOT NULL DEFAULT FALSE,
+      is_kicked   BOOLEAN NOT NULL DEFAULT FALSE,
+      PRIMARY KEY (group_id, user_id)
+    );
 
     CREATE TABLE IF NOT EXISTS join_requests (
       id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),

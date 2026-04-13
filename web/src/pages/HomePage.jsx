@@ -67,7 +67,7 @@ export default function HomePage() {
 
       {/* FAB */}
       <button
-        className={`${styles.createFab} btn-orange`}
+        className={`${styles.createFab} btn-primary`}
         onClick={() => navigate('/groups/new')}
       >
         <span className="material-symbols-outlined" style={{ fontSize: 18, fontVariationSettings: "'FILL' 1" }}>add</span>

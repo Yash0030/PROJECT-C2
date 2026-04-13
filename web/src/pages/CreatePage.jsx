@@ -195,7 +195,7 @@ export default function CreatePage() {
       {error && <div className={styles.err}>{error}</div>}
 
       <button
-        className={`${styles.submitBtn} btn-orange`}
+        className={`${styles.submitBtn} btn-primary`}
         onClick={handleSubmit}
         disabled={submitting || !location || !form.name.trim()}
       >

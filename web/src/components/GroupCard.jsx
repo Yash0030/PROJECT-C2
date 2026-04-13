@@ -6,9 +6,9 @@ function statusInfo(group) {
   const msLeft = new Date(group.expiresAt) - Date.now();
   const hLeft = msLeft / 3_600_000;
   if (group.isAlert) return { label: 'ALERT', color: '#ffb4ab', dotColor: '#ffb4ab' };
-  if (hLeft < 1)    return { label: 'ENDING SOON', color: '#ffb68b', dotColor: '#ff7a00' };
+  if (hLeft < 1)    return { label: 'ENDING SOON', color: '#00e5ff', dotColor: '#bc13fe' };
   const pct = group.memberCount / group.maxMembers;
-  if (pct > 0.7)    return { label: 'TRENDING', color: '#ffde56', dotColor: '#ffde56' };
+  if (pct > 0.7)    return { label: 'TRENDING', color: '#00ffb3', dotColor: '#00ffb3' };
   return               { label: 'ACTIVE', color: '#4ade80', dotColor: '#4ade80' };
 }
 
@@ -47,7 +47,7 @@ export default function GroupCard({ group }) {
       <div className={styles.tags}>
         <span className={styles.tag}>{tmpl}</span>
         {group.minGhostScore > 0 && (
-          <span className={styles.tag} style={{ color: '#ff7a00', borderColor: 'rgba(255,122,0,0.3)' }}>
+          <span className={styles.tag} style={{ color: '#bc13fe', borderColor: 'rgba(188, 19, 254,0.3)' }}>
             Ghost {group.minGhostScore}+
           </span>
         )}
@@ -57,7 +57,7 @@ export default function GroupCard({ group }) {
         <div className={styles.membersRow}>
           <div className={styles.avatarStack}>
             {Array.from({ length: shown }).map((_, i) => (
-              <div key={i} className={styles.avatarThumb} />
+              <img key={i} className={styles.avatarThumb} src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${group.id}-${i}`} alt="avatar" style={{objectFit: 'cover', background: 'var(--bg6)'}} />
             ))}
             {extra && <div className={styles.avatarThumb}>{extra}</div>}
           </div>

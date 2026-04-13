@@ -1,33 +1,66 @@
 const ADJECTIVES = [
-  'Silent','Wandering','Hidden','Ancient','Gentle','Swift','Crimson','Golden','Silver','Misty',
-  'Hollow','Distant','Fading','Rising','Lone','Calm','Wild','Bright','Dark','Pale',
+  'Silent', 'Wandering', 'Hidden', 'Ancient', 'Gentle',
+  'Swift', 'Crimson', 'Golden', 'Silver', 'Misty',
+  'Hollow', 'Distant', 'Fading', 'Rising', 'Lone',
+  'Calm', 'Wild', 'Bright', 'Dark', 'Pale',
 
-  'Shimmering','Frozen','Burning','Whispering','Restless','Fierce','Brave','Clever','Nimble','Radiant',
-  'Stormy','Velvet','Glowing','Dusky','Eternal','Sacred','Broken','Fearless','Curious','Playful',
+  'Shaded', 'Frozen', 'Burning', 'Glowing', 'Fierce',
+  'Brave', 'Clever', 'Quiet', 'Noisy', 'Soft',
+  'Rough', 'Sharp', 'Blunt', 'Cool', 'Warm',
+  'Chill', 'Stormy', 'Windy', 'Dusty', 'Icy',
 
-  'Shadowy','Blazing','Crystal','Electric','Floating','Hidden','Lost','Majestic','Noble','Quiet',
-  'Rugged','Serene','Soothing','Thunderous','Vivid','Witty','Zealous','Amber','Azure','Blissful',
+  'Shadowed', 'Radiant', 'Dusky', 'Amber', 'Azure',
+  'Scarlet', 'Ivory', 'Obsidian', 'Velvet', 'Luminous',
+  'Electric', 'Cosmic', 'Galactic', 'Solar', 'Lunar',
 
-  'Cloudy','Dreamy','Emerald','Flaming','Glacial','Heavenly','Icy','Jolly','Kind','Luminous',
-  'Mystic','Neon','Obsidian','Primal','Quick','Royal','Solar','Tranquil','Urban','Vast',
+  'Twilight', 'Dawn', 'Dusk', 'Nocturnal', 'Eternal',
+  'Infinite', 'Timeless', 'Sacred', 'Cursed', 'Blessed',
 
-  'Wavy','Young','Zesty','Arcane','Bold','Chill','Daring','Epic','Funky','Grand'
+  'Mystic', 'Arcane', 'Enchanted', 'Phantom', 'Spectral',
+  'Ghostly', 'Haunted', 'Divine', 'Celestial', 'Infernal',
+
+  'Feral', 'Majestic', 'Noble', 'Royal', 'Savage',
+  'Fearless', 'Restless', 'Endless', 'Boundless', 'Limitless',
+
+  'Shimmering', 'Glittering', 'Flickering', 'Blazing', 'Smoldering',
+  'Drifting', 'Floating', 'Falling', 'Soaring', 'Creeping',
+
+  'Hidden', 'Veiled', 'Masked', 'Nameless', 'Forgotten',
+  'Lost', 'Broken', 'Shattered', 'Reborn', 'Awakened'
 ];
 
 const NOUNS = [
-  'Fox','Crane','Wolf','Hawk','Raven','Bear','Lynx','Deer','Owl','Heron',
-  'Tiger','Falcon','Monk','Drifter','Nomad','Echo','Ember','Storm','River','Stone',
+  'Fox', 'Crane', 'Wolf', 'Hawk', 'Raven',
+  'Bear', 'Lynx', 'Deer', 'Owl', 'Heron',
+  'Tiger', 'Falcon', 'Monk', 'Drifter', 'Nomad',
+  'Echo', 'Ember', 'Storm', 'River', 'Stone',
 
-  'Shadow','Flame','Leaf','Mountain','Ocean','Breeze','Cloud','Star','Moon','Sun',
-  'Comet','Galaxy','Forest','Meadow','Valley','Cliff','Desert','Rain','Thunder','Lightning',
+  'Shadow', 'Flame', 'Ash', 'Blaze', 'Frost',
+  'Thunder', 'Lightning', 'Rain', 'Snow', 'Wind',
 
-  'Blossom','Petal','Root','Branch','Feather','Scale','Fang','Claw','Wing','Shell',
-  'Pearl','Crystal','Dust','Ash','Smoke','Spark','Wave','Tide','Current','Drift',
+  'Mountain', 'Forest', 'Desert', 'Ocean', 'Valley',
+  'Cliff', 'Canyon', 'Island', 'Field', 'Meadow',
 
-  'Knight','Samurai','Ninja','Warrior','Hunter','Seeker','Wanderer','Traveler','Guardian','Watcher',
-  'Spirit','Phantom','Ghost','Soul','Oracle','Sage','Wizard','Mage','Alchemist','Druid',
+  'Hunter', 'Seeker', 'Wanderer', 'Guardian', 'Watcher',
+  'Keeper', 'Runner', 'Stranger', 'Traveler', 'Outcast',
 
-  'Cipher','Code','Signal','Pulse','Matrix','Vector','Pixel','Node','Core','Circuit'
+  'Spirit', 'Soul', 'Phantom', 'Wraith', 'Specter',
+  'Entity', 'Being', 'Ghost', 'Shade', 'Echo',
+
+  'Blade', 'Sword', 'Dagger', 'Shield', 'Arrow',
+  'Spear', 'Hammer', 'Crown', 'Throne', 'Orb',
+
+  'Star', 'Comet', 'Galaxy', 'Planet', 'Nebula',
+  'Void', 'Cosmos', 'Orbit', 'Eclipse', 'Nova',
+
+  'Dragon', 'Phoenix', 'Griffin', 'Serpent', 'Hydra',
+  'Beast', 'Creature', 'Giant', 'Colossus', 'Titan',
+
+  'Scholar', 'Sage', 'Oracle', 'Mystic', 'Mage',
+  'Knight', 'Samurai', 'Ninja', 'Warrior', 'Champion',
+
+  'Path', 'Journey', 'Quest', 'Saga', 'Legend',
+  'Myth', 'Tale', 'Story', 'Chronicle', 'Verse'
 ];
 
 export function generateAnonName() {

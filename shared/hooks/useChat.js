@@ -74,6 +74,7 @@ export function useChat(groupId, token, currentUserId) {
   const [loading, setLoading]   = useState(true);
   const [sending, setSending]   = useState(false);
   const [error, setError]       = useState(null);
+  const [typingUsers, setTypingUsers] = useState({});
 
   // Initial load
   useEffect(() => {
@@ -102,15 +103,30 @@ export function useChat(groupId, token, currentUserId) {
 
     const onMessage = (msg) => {
       setMessages(prev => {
-        // Avoid duplicates (message already added optimistically on send)
         if (prev.find(m => m.id === msg.id)) return prev;
         return [...prev, { ...msg, isMine: msg.user_id === currentUserId }];
+      });
+      // also remove tying user on message receive just in case
+      setTypingUsers(prev => {
+        const next = { ...prev };
+        delete next[msg.user_id];
+        return next;
       });
     };
     socket.on('new_message', onMessage);
 
+    socket.on('typing', ({ userId, isTyping, anonName }) => {
+      setTypingUsers(prev => {
+        const next = { ...prev };
+        if (isTyping) next[userId] = anonName || 'Anonymous';
+        else delete next[userId];
+        return next;
+      });
+    });
+
     return () => {
       socket.off('new_message', onMessage);
+      socket.off('typing');
       socket.emit('leave_group', { groupId });
     };
   }, [groupId, token, currentUserId]);
@@ -144,5 +160,10 @@ const send = useCallback(async (content) => {
     } catch {}
   }, [groupId]);
 
-  return { messages, loading, sending, error, send, flag };
+  const emitTyping = useCallback((isTyping) => {
+    const socket = getSocket(token);
+    if (socket) socket.emit('typing', { groupId, isTyping });
+  }, [groupId, token]);
+
+  return { messages, loading, sending, error, send, flag, typingUsers, emitTyping };
 }

@@ -84,7 +84,7 @@ export default function PlacesPage() {
 
       {/* Add Tip FAB */}
       {location && (
-        <button className={`${styles.fab} btn-orange`} onClick={() => setShowForm(true)}>
+        <button className={`${styles.fab} btn-primary`} onClick={() => setShowForm(true)}>
           <span className="material-symbols-outlined" style={{ fontSize: 18, fontVariationSettings: "'FILL' 1" }}>add</span>
           Add Tip
         </button>
@@ -107,7 +107,7 @@ export default function PlacesPage() {
             <div className={styles.formActions}>
               <button className={styles.cancelBtn} onClick={() => setShowForm(false)}>Cancel</button>
               <button
-                className={`${styles.submitBtn} btn-orange`}
+                className={`${styles.submitBtn} btn-primary`}
                 onClick={handleSubmit}
                 disabled={submitting || tipContent.trim().length < 10}
               >

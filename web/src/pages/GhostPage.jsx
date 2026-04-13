@@ -5,8 +5,8 @@ import styles from './GhostPage.module.css';
 const CIRCUMFERENCE = 2 * Math.PI * 90; // r=90 in a 200x200 viewBox
 
 function scoreColor(s) {
-  if (s >= 70) return '#ff7a00';
-  if (s >= 40) return '#ff7a00';
+  if (s >= 70) return '#bc13fe';
+  if (s >= 40) return '#bc13fe';
   return '#ffb4ab';
 }
 function scoreStatus(s) {
@@ -37,12 +37,33 @@ export default function GhostPage() {
   const [score, setScore]     = useState(null);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [rotationsLeft, setRotationsLeft] = useState(5);
 
   useEffect(() => {
     Promise.all([ghostApi.score(), ghostApi.history()])
-      .then(([s, h]) => { setScore(s.score); setHistory(h); setLoading(false); })
+      .then(([s, h]) => { setScore(s.score); setRotationsLeft(s.rotationsLeft); setHistory(h); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  const [rotating, setRotating] = useState(false);
+  
+  const handleRotate = async () => {
+    if (!window.confirm("This will permanently rotate your anonymous identities in all current groups. Continue?")) return;
+    setRotating(true);
+    try {
+      await ghostApi.rotate();
+      const s = await ghostApi.score();
+      const h = await ghostApi.history();
+      setScore(s.score);
+      setRotationsLeft(s.rotationsLeft);
+      setHistory(h);
+      alert("Ghost ID successfully rotated!");
+    } catch {
+      alert("Failed to rotate identity.");
+    } finally {
+      setRotating(false);
+    }
+  };
 
   if (loading) return <div className={styles.page}><div className={styles.state}>Loading ghost trail…</div></div>;
 
@@ -88,8 +109,8 @@ export default function GhostPage() {
         </div>
         <div className={styles.calibRow}>
           <div className={styles.calibItem}>
-            <div className={styles.calibIcon} style={{ background: 'rgba(255,122,0,0.12)' }}>
-              <span className="material-symbols-outlined" style={{ color: '#ff7a00' }}>add_circle</span>
+            <div className={styles.calibIcon} style={{ background: 'rgba(188, 19, 254,0.12)' }}>
+              <span className="material-symbols-outlined" style={{ color: '#bc13fe' }}>add_circle</span>
             </div>
             <div>
               <div className={styles.calibVal}>+3 points</div>
@@ -97,7 +118,7 @@ export default function GhostPage() {
             </div>
           </div>
           <div className={styles.calibItem}>
-            <div className={styles.calibIcon} style={{ background: 'rgba(147,0,10,0.15)' }}>
+            <div className={styles.calibIcon} style={{ background: 'rgba(255, 0, 85,0.15)' }}>
               <span className="material-symbols-outlined" style={{ color: 'var(--error)' }}>remove_circle</span>
             </div>
             <div>
@@ -117,13 +138,13 @@ export default function GhostPage() {
           {history.map((e, i) => (
             <div key={i} className={`glass ${styles.fluxItem}`}>
               <div className={styles.fluxLeft}>
-                <div className={styles.fluxDot} style={{ background: e.delta >= 0 ? '#ff7a00' : 'var(--error)' }} />
+                <div className={styles.fluxDot} style={{ background: e.delta >= 0 ? '#bc13fe' : 'var(--error)' }} />
                 <div>
                   <div className={styles.fluxName}>{fluxLabel(e.reason)}</div>
                   <div className={styles.fluxSub}>{fluxSub(e.reason, e.created_at)}</div>
                 </div>
               </div>
-              <div className={styles.fluxDelta} style={{ color: e.delta >= 0 ? '#ff7a00' : 'var(--error)' }}>
+              <div className={styles.fluxDelta} style={{ color: e.delta >= 0 ? '#bc13fe' : 'var(--error)' }}>
                 {e.delta >= 0 ? '+' : ''}{e.delta}
               </div>
             </div>
@@ -140,8 +161,8 @@ export default function GhostPage() {
         <div className={styles.shadowDesc}>
           Your Ghost Trail is an encrypted ledger. No user, including administrators, can map these score changes back to specific people or places. Your identity remains absolute.
         </div>
-        <button className={`${styles.rotateBtn} btn-orange`}>
-          Rotate Ghost ID
+        <button className={`${styles.rotateBtn} ${rotationsLeft <= 0 ? '' : 'btn-primary'}`} onClick={handleRotate} disabled={rotating || rotationsLeft <= 0} style={{ opacity: rotationsLeft <= 0 ? 0.5 : 1 }}>
+          {rotating ? 'Rotating...' : `Rotate Ghost ID (${rotationsLeft}/5 left)`}
         </button>
       </div>
     </div>

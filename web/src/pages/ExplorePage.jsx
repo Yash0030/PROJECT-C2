@@ -31,12 +31,12 @@ function healthColor(h) {
 }
 
 // Custom orange pin marker
-function makeMarker(color = '#ff7a00') {
+function makeMarker(color = '#bc13fe') {
   return L.divIcon({
     className: '',
     html: `<div style="
       width:14px;height:14px;border-radius:50%;
-      background:${color};border:2px solid #0e0e0e;
+      background:${color};border:2px solid #07050f;
       box-shadow:0 0 0 3px ${color}44;
     "></div>`,
     iconSize: [14, 14],
@@ -49,7 +49,7 @@ const youMarker = L.divIcon({
   className: '',
   html: `<div style="
     width:16px;height:16px;border-radius:50%;
-    background:#ffde56;border:2px solid #0e0e0e;
+    background:#00ffb3;border:2px solid #07050f;
     box-shadow:0 0 0 5px rgba(255,222,86,0.25);
   "></div>`,
   iconSize: [16, 16],
@@ -114,8 +114,8 @@ export default function ExplorePage() {
     circleRef.current?.remove();
     circleRef.current = L.circle([location.lat, location.lng], {
       radius: radius * 1000,
-      color: '#ff7a00',
-      fillColor: '#ff7a00',
+      color: '#bc13fe',
+      fillColor: '#bc13fe',
       fillOpacity: 0.04,
       weight: 1,
       dashArray: '4 4',
@@ -150,10 +150,10 @@ export default function ExplorePage() {
     markersRef.current.forEach(m => m.remove());
     markersRef.current = data.map(g => {
       if (!g.lat && !g.lng) return null;
-      const color = g.isAlert ? '#ff5252' : '#ff7a00';
+      const color = g.isAlert ? '#ff5252' : '#bc13fe';
       const m = L.marker([g.lat, g.lng], { icon: makeMarker(color) })
         .addTo(mapInst.current)
-        .bindPopup(`<b style="color:#e5e2e1">${g.name}</b>`, {
+        .bindPopup(`<b style="color:#f4f4fa">${g.name}</b>`, {
           className: 'lokaal-popup',
         });
       m.on('click', () => {
@@ -200,7 +200,7 @@ export default function ExplorePage() {
 
         {/* Search bar */}
         <div className={styles.searchBar}>
-          <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#a78b7c' }}>search</span>
+          <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#9a8dba' }}>search</span>
           <input
             className={styles.searchInput}
             placeholder="Search city, neighborhood…"
@@ -221,7 +221,7 @@ export default function ExplorePage() {
 
         {/* Radius pill */}
         <div className={styles.radiusPill}>
-          <span className="material-symbols-outlined" style={{ fontSize: 14, color: '#a78b7c' }}>radar</span>
+          <span className="material-symbols-outlined" style={{ fontSize: 14, color: '#9a8dba' }}>radar</span>
           <span className={styles.radiusLabel}>RADIUS</span>
           <span className={styles.radiusVal}>{radius} km</span>
           <div className={styles.radiusBtns}>
@@ -250,7 +250,7 @@ export default function ExplorePage() {
       {/* Manual input */}
       {tab === 'manual' && (
         <div className={styles.manualInput}>
-          <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#a78b7c' }}>location_on</span>
+          <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#9a8dba' }}>location_on</span>
           <input
             className={styles.manualInputField}
             placeholder="City, neighborhood or address…"
@@ -286,7 +286,7 @@ export default function ExplorePage() {
           >
             <div className={styles.cardTop}>
               <div className={styles.cardAvatar}>
-                <span className="material-symbols-outlined" style={{ fontSize: 20, color: g.isAlert ? '#ff6b6b' : '#ff7a00' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 20, color: g.isAlert ? '#ff6b6b' : '#bc13fe' }}>
                   {ICONS[g.template] || 'groups'}
                 </span>
               </div>
