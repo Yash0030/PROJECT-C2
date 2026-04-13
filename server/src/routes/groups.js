@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { db } from '../db/client.js';
 import { requireSession } from '../middleware/auth.js';
 import { toNeighborhood, haversineKm } from '../services/location.js';
-
+import { generateAnonName } from '../services/anonNames.js';
 const router = Router();
 
 const TEMPLATES = ['general', 'new-here', 'festival', 'night-out', 'transit-delay', 'local-issue', 'book-readers', 'alert'];
@@ -65,10 +65,14 @@ router.post('/', requireSession, async (req, res) => {
     const group = rows[0];
 
     // Auto-join creator
-    await client.query(
-      `INSERT INTO group_members (group_id, user_id, is_creator) VALUES ($1,$2,TRUE)`,
-      [group.id, req.user.sub]
-    );
+
+
+// Auto-join creator with anonymous name
+const creatorAnonName = generateAnonName();
+await client.query(
+  `INSERT INTO group_members (group_id, user_id, anon_name, is_creator) VALUES ($1,$2,$3,TRUE)`,
+  [group.id, req.user.sub, creatorAnonName]
+);
 
     await client.query('COMMIT');
     res.status(201).json(sanitiseGroup(group, req.user.sub));

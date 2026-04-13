@@ -162,12 +162,15 @@ export default function GroupPage() {
 
             {messages.map(msg => msg.isMine ? (
               <div key={msg.id} className={styles.bubbleOutGroup}>
+                <span className={styles.bubbleLabel} style={{ textAlign: 'right', display: 'block' }}>
+                  You · {msg.anon_name}
+                </span>
                 <div className={styles.bubbleOut}>{msg.content}</div>
                 <span className={styles.bubbleOutTime}>{formatTime(msg.createdAt || msg.created_at)}</span>
               </div>
             ) : (
               <div key={msg.id} className={styles.bubbleGroup}>
-                <span className={styles.bubbleLabel}>Anonymous</span>
+                <span className={styles.bubbleLabel}>{msg.anon_name || 'Anonymous'}</span>
                 <div className={styles.bubbleIn} style={{ position: 'relative' }}>
                   {msg.content}
                   <button className={styles.flagBtn} onClick={() => flag(msg.id)}>⚑</button>

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSessionStore } from '../../shared/store/sessionStore.js';
+import ExplorePage from './pages/ExplorePage.jsx';
 
 import HomePage      from './pages/HomePage.jsx';
 import GroupPage     from './pages/GroupPage.jsx';
@@ -31,6 +32,8 @@ export default function App() {
         <Route path="places"      element={<PlacesPage />} />
         <Route path="ghost"       element={<GhostPage />} />
         <Route path="*"           element={<Navigate to="/" replace />} />
+        <Route path="explore" element={<ExplorePage />} />
+
       </Route>
     </Routes>
   );

@@ -82,10 +82,10 @@ export function useChat(groupId, token, currentUserId) {
     messagesApi.list(groupId)
       .then(msgs => {
         // Mark which messages are mine using user_id from server
-        const marked = msgs.map(m => ({
-          ...m,
-          isMine: m.is_mine ?? m.user_id === currentUserId,
-        }));
+     const marked = msgs.map(m => ({
+  ...m,
+  isMine: m.is_mine ?? m.user_id === currentUserId,
+}));
         setMessages(marked);
         setLoading(false);
       })
@@ -115,19 +115,22 @@ export function useChat(groupId, token, currentUserId) {
     };
   }, [groupId, token, currentUserId]);
 
-  const send = useCallback(async (content) => {
-    setSending(true);
-    setError(null);
-    try {
-      const msg = await messagesApi.send(groupId, content);
-      // Add optimistically with isMine: true
-      setMessages(prev => [...prev, { ...msg, isMine: true }]);
-    } catch (err) {
-      setError(err.response?.data?.error || 'Failed to send');
-    } finally {
-      setSending(false);
-    }
-  }, [groupId]);
+const send = useCallback(async (content) => {
+  setSending(true);
+  setError(null);
+  try {
+    const msg = await messagesApi.send(groupId, content);
+    // Add with isMine:true — socket will receive same message but dedup by id
+    setMessages(prev => {
+      if (prev.find(m => m.id === msg.id)) return prev;
+      return [...prev, { ...msg, isMine: true }];
+    });
+  } catch (err) {
+    setError(err.response?.data?.error || 'Failed to send');
+  } finally {
+    setSending(false);
+  }
+}, [groupId]);
 
   const flag = useCallback(async (messageId) => {
     try {

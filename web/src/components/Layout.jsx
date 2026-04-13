@@ -148,9 +148,13 @@ export default function Layout() {
         <NavLink to="/" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
           <span className="material-symbols-outlined">explore</span>
         </NavLink>
+        <NavLink to="/explore" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
+  <span className="material-symbols-outlined">travel_explore</span>
+</NavLink>
         <NavLink to="/groups/new" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
           <span className="material-symbols-outlined">add</span>
         </NavLink>
+        
         <NavLink to="/places" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
           <span className="material-symbols-outlined">location_on</span>
         </NavLink>

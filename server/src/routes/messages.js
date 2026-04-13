@@ -15,7 +15,6 @@ router.get('/:id/messages', requireSession, async (req, res) => {
   const before = req.query.before || new Date().toISOString();
 
   try {
-    // Must be a member
     const { rows: mem } = await db().query(
       `SELECT 1 FROM group_members WHERE group_id=$1 AND user_id=$2 AND is_kicked=FALSE`,
       [groupId, req.user.sub]
@@ -23,13 +22,15 @@ router.get('/:id/messages', requireSession, async (req, res) => {
     if (!mem[0]) return res.status(403).json({ error: 'Not a member of this group' });
 
     const { rows } = await db().query(
-  `SELECT id, user_id, content, flag_count, is_hidden, created_at,
-          (user_id = $1) AS is_mine
-   FROM messages
-   WHERE group_id=$2 AND created_at < $3 AND is_hidden=FALSE
-   ORDER BY created_at DESC LIMIT $4`,
-  [req.user.sub, groupId, before, limit]
-);
+      `SELECT m.id, m.user_id, m.content, m.flag_count, m.is_hidden, m.created_at,
+              (m.user_id = $1) AS is_mine,
+              gm.anon_name
+       FROM messages m
+       JOIN group_members gm ON gm.group_id = m.group_id AND gm.user_id = m.user_id
+       WHERE m.group_id=$2 AND m.created_at < $3 AND m.is_hidden=FALSE
+       ORDER BY m.created_at DESC LIMIT $4`,
+      [req.user.sub, groupId, before, limit]
+    );
     res.json(rows.reverse());
   } catch (err) {
     console.error(err);
@@ -49,18 +50,16 @@ router.post('/:id/messages', requireSession, async (req, res) => {
   const groupId = req.params.id;
 
   if (isBlocked(content)) {
-    return res.status(422).json({ error: 'Message could not be sent' }); // vague on purpose
+    return res.status(422).json({ error: 'Message could not be sent' });
   }
 
   try {
-    // Member check
     const { rows: mem } = await db().query(
       `SELECT 1 FROM group_members WHERE group_id=$1 AND user_id=$2 AND is_kicked=FALSE`,
       [groupId, req.user.sub]
     );
     if (!mem[0]) return res.status(403).json({ error: 'Not a member' });
 
-    // Silence mode check
     const { rows: gRows } = await db().query(
       `SELECT silence_start, silence_end, expires_at FROM groups WHERE id=$1`, [groupId]
     );
@@ -70,7 +69,7 @@ router.post('/:id/messages', requireSession, async (req, res) => {
     }
 
     if (group.silence_start != null && group.silence_end != null) {
-      const hour = new Date().getUTCHours() + 5.5; // IST offset; use proper timezone in prod
+      const hour = new Date().getUTCHours() + 5.5;
       const h = Math.floor(hour) % 24;
       if (h >= group.silence_start && h < group.silence_end) {
         return res.status(403).json({ error: 'Group is in silence mode right now' });
@@ -84,7 +83,6 @@ router.post('/:id/messages', requireSession, async (req, res) => {
     );
     const msg = rows[0];
 
-    // Update group health score
     const tox = toxicityScore(content);
     if (tox > 0) {
       await db().query(
@@ -93,16 +91,24 @@ router.post('/:id/messages', requireSession, async (req, res) => {
       );
     }
 
-    // Broadcast via socket
+    // Get sender's anon name for this group
+    const { rows: gmRows } = await db().query(
+      `SELECT anon_name FROM group_members WHERE group_id=$1 AND user_id=$2`,
+      [groupId, req.user.sub]
+    );
+    const anonName = gmRows[0]?.anon_name || 'Anonymous';
+
     const io = req.app.get('io');
     io?.to(groupId).emit('new_message', {
-      id: msg.id,
-      content: msg.content,
-      isMine: false,
+      id:        msg.id,
+      user_id:   req.user.sub,
+      content:   msg.content,
+      anon_name: anonName,
+      isMine:    false,
       createdAt: msg.created_at,
     });
 
-    res.status(201).json({ ...msg, isMine: true });
+    res.status(201).json({ ...msg, anon_name: anonName, isMine: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });
@@ -119,7 +125,6 @@ router.post('/:id/messages/:msgId/flag', requireSession, async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    // Insert flag (unique per session)
     const { rowCount } = await client.query(
       `INSERT INTO message_flags (message_id, user_id) VALUES ($1,$2) ON CONFLICT DO NOTHING`,
       [msgId, req.user.sub]
@@ -135,12 +140,10 @@ router.post('/:id/messages/:msgId/flag', requireSession, async (req, res) => {
     );
     const flagCount = rows[0].flag_count;
 
-    // 3 flags → hide message
     if (flagCount >= 3) {
       await client.query(`UPDATE messages SET is_hidden=TRUE WHERE id=$1`, [msgId]);
     }
 
-    // 5 flags → suspend group (notify ops)
     if (flagCount >= 5) {
       await client.query(`UPDATE groups SET health_score=0 WHERE id=$1`, [groupId]);
       const io = req.app.get('io');
