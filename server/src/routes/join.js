@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { db } from '../db/client.js';
 import { requireSession } from '../middleware/auth.js';
 import { generateAnonName } from '../services/anonNames.js';
+
 const router = Router();
 
 /**
@@ -119,16 +120,16 @@ router.patch('/:id/join-requests/:requestId', requireSession, async (req, res) =
       `UPDATE join_requests SET status=$1 WHERE id=$2`, [action === 'approve' ? 'approved' : 'rejected', requestId]
     );
 
-    if (action === 'approve') {
-      const anonName = generateAnonName();
-      await client.query(
-        `INSERT INTO group_members (group_id, user_id, anon_name) VALUES ($1, $2, $3)
-        ON CONFLICT DO NOTHING`, [groupId, jr.user_id, anonName]
-      );
-      await client.query(
-        `UPDATE groups SET member_count = member_count + 1 WHERE id=$1`, [groupId]
-      );
-    }
+if (action === 'approve') {
+  const anonName = generateAnonName();
+  await client.query(
+    `INSERT INTO group_members (group_id, user_id, anon_name) VALUES ($1, $2, $3)
+     ON CONFLICT DO NOTHING`, [groupId, jr.user_id, anonName]
+  );
+  await client.query(
+    `UPDATE groups SET member_count = member_count + 1 WHERE id=$1`, [groupId]
+  );
+}
 
     await client.query('COMMIT');
 

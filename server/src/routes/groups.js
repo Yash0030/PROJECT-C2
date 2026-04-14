@@ -65,14 +65,14 @@ router.post('/', requireSession, async (req, res) => {
     const group = rows[0];
 
     // Auto-join creator
-      
 
-        // Auto-join creator with anonymous name
-        const creatorAnonName = generateAnonName();
-        await client.query(
-          `INSERT INTO group_members (group_id, user_id, anon_name, is_creator) VALUES ($1,$2,$3,TRUE)`,
-          [group.id, req.user.sub, creatorAnonName]
-        );
+
+// Auto-join creator with anonymous name
+const creatorAnonName = generateAnonName();
+await client.query(
+  `INSERT INTO group_members (group_id, user_id, anon_name, is_creator) VALUES ($1,$2,$3,TRUE)`,
+  [group.id, req.user.sub, creatorAnonName]
+);
 
     await client.query('COMMIT');
     res.status(201).json(sanitiseGroup(group, req.user.sub));
@@ -143,11 +143,19 @@ router.get('/:id', requireSession, async (req, res) => {
        FROM groups g
        LEFT JOIN group_members gm
          ON gm.group_id = g.id AND gm.user_id = $1
-       WHERE g.id = $2 AND g.expires_at > NOW()`,
+       WHERE g.id = $2`,
       [req.user.sub, req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Group not found' });
-    res.json({ ...sanitiseGroup(rows[0], req.user.sub), isMember: rows[0].is_member, isCreator: rows[0].is_creator });
+    const isExpired = new Date(rows[0].expires_at) < new Date();
+    res.json({ 
+      ...sanitiseGroup(rows[0], req.user.sub), 
+      isMember: rows[0].is_member, 
+      isCreator: rows[0].is_creator,
+      isExpired,
+      lat: isExpired ? rows[0].lat : undefined,
+      lng: isExpired ? rows[0].lng : undefined
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });

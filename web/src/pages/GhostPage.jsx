@@ -35,28 +35,35 @@ function timeAgo(iso) {
 
 export default function GhostPage() {
   const [score, setScore]     = useState(null);
+  const [rotationsLeft, setRotationsLeft] = useState(5);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [rotationsLeft, setRotationsLeft] = useState(5);
 
   useEffect(() => {
     Promise.all([ghostApi.score(), ghostApi.history()])
-      .then(([s, h]) => { setScore(s.score); setRotationsLeft(s.rotationsLeft); setHistory(h); setLoading(false); })
+      .then(([s, h]) => { 
+        setScore(s.score); 
+        setRotationsLeft(s.rotationsLeft ?? 5);
+        setHistory(h); 
+        setLoading(false); 
+      })
       .catch(() => setLoading(false));
   }, []);
 
   const [rotating, setRotating] = useState(false);
   
   const handleRotate = async () => {
+    if (rotationsLeft <= 0) {
+      alert("You have reached the maximum number of Ghost ID rotations.");
+      return;
+    }
     if (!window.confirm("This will permanently rotate your anonymous identities in all current groups. Continue?")) return;
     setRotating(true);
     try {
       await ghostApi.rotate();
-      const s = await ghostApi.score();
-      const h = await ghostApi.history();
-      setScore(s.score);
-      setRotationsLeft(s.rotationsLeft);
+      const [h, s] = await Promise.all([ghostApi.history(), ghostApi.score()]);
       setHistory(h);
+      setRotationsLeft(s.rotationsLeft ?? 5);
       alert("Ghost ID successfully rotated!");
     } catch {
       alert("Failed to rotate identity.");
@@ -161,8 +168,11 @@ export default function GhostPage() {
         <div className={styles.shadowDesc}>
           Your Ghost Trail is an encrypted ledger. No user, including administrators, can map these score changes back to specific people or places. Your identity remains absolute.
         </div>
-        <button className={`${styles.rotateBtn} ${rotationsLeft <= 0 ? '' : 'btn-primary'}`} onClick={handleRotate} disabled={rotating || rotationsLeft <= 0} style={{ opacity: rotationsLeft <= 0 ? 0.5 : 1 }}>
-          {rotating ? 'Rotating...' : `Rotate Ghost ID (${rotationsLeft}/5 left)`}
+        <div style={{ marginBottom: '1rem', color: rotationsLeft === 0 ? 'var(--error)' : 'var(--text-dim)', fontSize: '0.9rem' }}>
+          Rotations Remaining: {rotationsLeft}/5
+        </div>
+        <button className={`${styles.rotateBtn} btn-primary`} onClick={handleRotate} disabled={rotating || rotationsLeft === 0}>
+          {rotating ? 'Rotating...' : 'Rotate Ghost ID'}
         </button>
       </div>
     </div>

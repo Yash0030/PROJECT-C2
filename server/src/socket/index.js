@@ -116,6 +116,10 @@ export function initSocket(httpServer) {
       socket.leave(groupId);
     });
 
+    socket.on('typing', ({ groupId, isTyping, anonName }) => {
+      socket.to(groupId).emit('typing', { userId: socket.userId, isTyping, anonName });
+    });
+
     socket.on('disconnect', () => {});
   });
 

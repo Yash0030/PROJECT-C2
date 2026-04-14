@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { groupsApi, joinApi, placesApi } from '../../../shared/api/index.js';
+import { groupsApi, joinApi } from '../../../shared/api/index.js';
 import { useChat } from '../../../shared/hooks/useChat.js';
 import { useSessionStore } from '../../../shared/store/sessionStore.js';
 import { getSocket } from '../../../shared/hooks/useSocket.js';
@@ -26,9 +26,6 @@ export default function GroupPage() {
   const [showEmojis, setShowEmojis] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
   const bottomRef                 = useRef(null);
-
-  const [tipContent, setTipContent] = useState('');
-  const [tipState, setTipState] = useState('idle');
 
   const { messages, sending, error: chatError, send, flag, typingUsers, emitTyping } = useChat(
   group?.isMember ? id : null,
@@ -84,16 +81,13 @@ export default function GroupPage() {
     setReplyingTo({ name, text });
   };
 
-  const handleTipSubmit = async () => {
-    if (!tipContent.trim() || !group?.lat) return;
-    setTipState('submitting');
+  const handleKick = async (targetUserId, anonName) => {
+    if (!window.confirm(`Are you sure you want to kick ${anonName}? They will instantly lose 5 Ghost Score points and be banned from this group.`)) return;
     try {
-      await placesApi.submitTip(group.lat, group.lng, tipContent.trim());
-      setTipState('done');
-      setTimeout(() => navigate('/places'), 1500);
+      await groupsApi.kickMember(id, targetUserId);
+      alert(`${anonName} has been kicked from the group.`);
     } catch {
-      setTipState('idle');
-      alert("Failed to submit tip.");
+      alert("Failed to kick user.");
     }
   };
 
@@ -120,13 +114,6 @@ export default function GroupPage() {
   const memberCount = group.memberCount || 1;
   const shown = Math.min(memberCount, 2);
   const extra = memberCount > 2 ? `+${memberCount - 2}` : null;
-
-  const isSilenced = (() => {
-    if (!group || group.silenceStart == null || group.silenceEnd == null) return false;
-    const hour = new Date().getUTCHours() + 5.5;
-    const h = Math.floor(hour) % 24;
-    return h >= group.silenceStart && h < group.silenceEnd;
-  })();
 
   return (
     <div className={styles.page}>
@@ -198,36 +185,8 @@ export default function GroupPage() {
         </div>
       )}
 
-      {/* Chat or Place Memory */}
-      {group.isExpired ? (
-        <div style={{ padding: '60px 20px', textAlign: 'center', background: 'var(--bg6)', margin: '16px', borderRadius: '16px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🕸</div>
-          <h2 style={{ margin: '0 0 8px 0', color: 'var(--text1)' }}>Group Dissolved</h2>
-          <p style={{ color: 'var(--text3)', maxWidth: '300px', margin: '0 auto 24px', fontSize: '14px', lineHeight: '1.5' }}>
-            This timeframe has expired. Leave an anonymous tip to be pinned here for future explorers.
-          </p>
-          {tipState === 'done' ? (
-            <div style={{ color: 'var(--primary-c)' }}>Tip pinned successfully!</div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '300px', margin: '0 auto' }}>
-              <textarea 
-                placeholder="What's worth knowing here?" 
-                rows={3} maxLength={240} 
-                style={{ padding: '12px', borderRadius: '12px', background: 'var(--bg4)', border: '1px solid var(--border)', color: 'white', resize: 'none' }}
-                value={tipContent}
-                onChange={e => setTipContent(e.target.value)}
-              />
-              <button 
-                className="btn-primary" 
-                onClick={handleTipSubmit} 
-                disabled={tipState === 'submitting' || !tipContent.trim()}
-              >
-                {tipState === 'submitting' ? 'Pinning...' : 'Pin Local Tip'}
-              </button>
-            </div>
-          )}
-        </div>
-      ) : group.isMember && (
+      {/* Chat */}
+      {group.isMember && (
         <>
           <div className={styles.messages}>
             {/* Timestamp header */}
@@ -262,8 +221,11 @@ export default function GroupPage() {
                 <div className={styles.bubbleIn} style={{ position: 'relative' }}>
                   {renderMessageContent(msg.content)}
                   <div style={{ position: 'absolute', top: 6, right: -48, display: 'flex', gap: 4 }}>
-                    <button className={styles.flagBtn} style={{ position: 'static' }} onClick={() => handleReply(msg.anon_name || 'Anonymous', msg.content)}>↩</button>
-                    <button className={styles.flagBtn} style={{ position: 'static' }} onClick={() => flag(msg.id)}>⚑</button>
+                    <button className={styles.flagBtn} style={{ position: 'static' }} onClick={() => handleReply(msg.anon_name || 'Anonymous', msg.content)} title="Reply">↩</button>
+                    <button className={styles.flagBtn} style={{ position: 'static' }} onClick={() => flag(msg.id)} title="Flag message">⚑</button>
+                    {group.isCreator && (
+                      <button className={styles.flagBtn} style={{ position: 'static', color: 'var(--error)' }} onClick={() => handleKick(msg.user_id, msg.anon_name || 'Anonymous')} title="Kick user">✕</button>
+                    )}
                   </div>
                 </div>
                 <span className={styles.bubbleTime}>{formatTime(msg.createdAt || msg.created_at)}</span>
@@ -299,12 +261,11 @@ export default function GroupPage() {
             )}
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className={styles.inputShell} style={{ borderRadius: (replyingTo || showEmojis) ? '0 0 12px 12px' : 'var(--radius-full)', opacity: isSilenced ? 0.6 : 1 }}>
+              <div className={styles.inputShell} style={{ borderRadius: (replyingTo || showEmojis) ? '0 0 12px 12px' : 'var(--radius-full)' }}>
                 <input
                   className={styles.chatInput}
-                  placeholder={isSilenced ? `Group silenced until ${group.silenceEnd}:00` : "Send a message..."}
+                  placeholder="Send a message..."
                   value={input}
-                  disabled={isSilenced}
                   onChange={e => {
                     const val = e.target.value;
                     setInput(val);
@@ -314,15 +275,14 @@ export default function GroupPage() {
                   onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
                   maxLength={500}
                 />
-                <button className={styles.emojiBtn} onClick={() => setShowEmojis(v => !v)} disabled={isSilenced}>
+                <button className={styles.emojiBtn} onClick={() => setShowEmojis(v => !v)}>
                   <span className="material-symbols-outlined">mood</span>
                 </button>
               </div>
               <button
-                className={`${styles.sendBtn} ${isSilenced ? '' : 'btn-primary'}`}
+                className={`${styles.sendBtn} btn-primary`}
                 onClick={handleSend}
-                disabled={sending || (!input.trim() && !replyingTo) || isSilenced}
-                style={{ opacity: isSilenced ? 0.6 : 1 }}
+                disabled={sending || (!input.trim() && !replyingTo)}
               >
                 <span className="material-symbols-outlined" style={{ fontSize: 18, fontVariationSettings: "'FILL' 1" }}>send</span>
               </button>
