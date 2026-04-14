@@ -1,11 +1,11 @@
-# Lokaal 🌐
+# ChitChaT 🌐
 
-Anonymous, location-based group chat that expires. Built to solve what Yik Yak couldn't.
+Anonymous, location-based group chat that expires.
 
 ## Architecture
 
 ```
-lokaal/
+ChitChat/
 ├── web/                  ← React (Vite) web app
 │   └── src/
 │       ├── pages/        ← HomePage, GroupPage, CreatePage, PlacesPage, GhostPage
@@ -37,7 +37,7 @@ lokaal/
 
 ```bash
 git clone <your-repo>
-cd lokaal
+cd ChitChat
 cp .env.example .env
 # Edit .env with your DATABASE_URL, REDIS_URL, SESSION_SECRET
 npm install              # installs root devDeps (concurrently)
@@ -51,9 +51,9 @@ cd ..
 
 Create a Postgres database:
 ```sql
-CREATE DATABASE lokaal_dev;
-CREATE USER lokaal WITH PASSWORD 'lokaal';
-GRANT ALL PRIVILEGES ON DATABASE lokaal_dev TO lokaal;
+CREATE DATABASE ChitChat_dev;
+CREATE USER ChitChat WITH PASSWORD 'ChitChat';
+GRANT ALL PRIVILEGES ON DATABASE ChitChat_dev TO ChitChat;
 ```
 
 Tables are created automatically on first server boot (inline migrations in `server/src/db/client.js`).
