@@ -10,9 +10,9 @@
 .list { display: flex; flex-direction: column; gap: 10px; }
 
 .card {
-  background: rgba(22, 15, 45,0.7);
+  background: var(--shade-glass);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--shade-border);
   border-radius: var(--radius-xl);
   padding: 18px 16px;
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
@@ -24,7 +24,7 @@
   color: var(--text); line-height: 1.55;
 }
 .time {
-  font-size: 10px; font-weight: 700; color: rgba(180,156,126,0.5);
+  font-size: 10px; font-weight: 700; color: var(--text5);
   text-transform: uppercase; letter-spacing: 0.12em; margin-top: 6px;
 }
 
@@ -32,10 +32,9 @@
 
 .approveBtn {
   width: 44px; height: 44px; border-radius: 50%;
-  background: linear-gradient(135deg, #bc13fe, #00e5ff);
-  color: #ffffff; border: none;
+  background: var(--primary);
+  color: var(--on-primary); border: none;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 14px rgba(188, 19, 254,0.4);
   transition: transform 0.1s;
 }
 .approveBtn:active { transform: scale(0.9); }
@@ -43,7 +42,7 @@
 
 .rejectBtn {
   width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(53,53,52,0.5); border: 1px solid rgba(255,255,255,0.08);
+  background: var(--bg4); border: 1px solid var(--border);
   color: var(--text4);
   display: flex; align-items: center; justify-content: center;
   transition: transform 0.1s;

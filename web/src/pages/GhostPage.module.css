@@ -23,7 +23,7 @@
 .scoreStatus { font-size: 14px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--secondary); margin-top: 2px; }
 .glowBg {
   position: absolute; width: 160px; height: 160px;
-  background: rgba(188, 19, 254,0.12); blur: 60px;
+  background: var(--primary); opacity: 0.12;
   border-radius: 50%; z-index: -1;
   filter: blur(40px);
 }
@@ -48,7 +48,7 @@
 /* Flux */
 .fluxLabel {
   font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.2em; color: rgba(221,194,162,0.6);
+  letter-spacing: 0.2em; color: var(--text5);
   margin-bottom: 12px; padding: 0 4px;
 }
 .fluxList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
@@ -59,7 +59,7 @@
 .fluxLeft { display: flex; align-items: center; gap: 14px; }
 .fluxDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .fluxName { font-size: 14px; font-weight: 600; color: var(--text); }
-.fluxSub { font-size: 10px; font-weight: 700; color: rgba(221,194,162,0.5); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+.fluxSub { font-size: 10px; font-weight: 700; color: var(--text5); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
 .fluxDelta { font-size: 15px; font-weight: 800; }
 .empty { font-size: 13px; color: var(--text4); padding: 8px 4px; }
 

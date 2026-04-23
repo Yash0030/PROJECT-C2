@@ -107,17 +107,29 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { useSessionStore } from '../../../shared/store/sessionStore.js';
+import { useState, useEffect } from 'react';
 import styles from './Layout.module.css';
 
 export default function Layout() {
   const ghostScore = useSessionStore(s => s.ghostScore);
-  const logout     = useSessionStore(s => s.logout);
-  const user       = useSessionStore(s => s.user);
-  const navigate   = useNavigate();
+  const logout = useSessionStore(s => s.logout);
+  const user = useSessionStore(s => s.user);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/auth');
+  };
+
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -125,12 +137,15 @@ export default function Layout() {
       <header className={styles.header}>
         <div className={styles.headerLeft}>
           <div className={styles.avatar}>
-            <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.id || 'default'}`} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover', background: 'var(--bg6)'}} />
+            <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.id || 'default'}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', background: 'var(--bg6)' }} />
           </div>
-          <span className={styles.logo}>ChitChat</span>
+          {/* <img src="/logo.png" alt="Logo" style={{ height: '50px', marginLeft: '-30px' }} /> */}
         </div>
 
         <div className={styles.headerRight}>
+          <button className={styles.logoutBtn} onClick={toggleTheme} title="Toggle Theme">
+            <span className="material-symbols-outlined">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>
+          </button>
           <NavLink to="/ghost" className={styles.ghostPill}>
             <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}>stars</span>
             {ghostScore}
@@ -150,12 +165,12 @@ export default function Layout() {
           <span className="material-symbols-outlined">explore</span>
         </NavLink>
         <NavLink to="/explore" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
-  <span className="material-symbols-outlined">travel_explore</span>
-</NavLink>
+          <span className="material-symbols-outlined">travel_explore</span>
+        </NavLink>
         <NavLink to="/groups/new" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
           <span className="material-symbols-outlined">add</span>
         </NavLink>
-        
+
         <NavLink to="/places" className={({ isActive }) => isActive ? styles.navItemActive : styles.navItem}>
           <span className="material-symbols-outlined">location_on</span>
         </NavLink>

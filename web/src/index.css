@@ -4,29 +4,59 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:           #07050f;
-  --bg2:          #0e0a18;
-  --bg3:          #151025;
-  --bg4:          #1c1532;
-  --bg5:          #261c44;
-  --bg6:          #33255b;
-  --text:         #f4f4fa;
-  --text2:        #e2dced;
-  --text3:        #c8bcdf;
-  --text4:        #9a8dba;
-  --text5:        #62557e;
-  --border:       rgba(255,255,255,0.06);
-  --primary:      #00e5ff;
-  --primary-c:    #bc13fe;
-  --secondary:    #00ffb3;
-  --tertiary:     #c8bcdf;
-  --error:        #ffb4ab;
-  --on-primary:   #ffffff;
+  /* Dark Mode Default (Neon Green & Black/Charcoal) */
+  --bg:           #0a0a0a;
+  --bg2:          #141414;
+  --bg3:          #1f1f1f;
+  --bg4:          #292929;
+  --bg5:          #333333;
+  --bg6:          #3d3d3d;
+  --text:         #f5f5f5;
+  --text2:        #cccccc;
+  --text3:        #a3a3a3;
+  --text4:        #7a7a7a;
+  --text5:        #525252;
+  --border:       rgba(255,255,255,0.1);
+  --primary:      #39ff14; /* Neon Green */
+  --primary-c:    #39ff14; /* Consolidate primary colors */
+  --secondary:    #39ff14;
+  --tertiary:     #a3a3a3;
+  --error:        #ff4c4c;
+  --on-primary:   #000000;
+  
+  --shade-glass:  rgba(20, 20, 20, 0.72);
+  --shade-border: rgba(255, 255, 255, 0.06);
+
   --radius-sm:    8px;
   --radius-md:    12px;
   --radius-lg:    16px;
   --radius-xl:    20px;
   --radius-full:  9999px;
+}
+
+[data-theme='light'] {
+  /* Light Mode (Light Grey & Light Blue) */
+  --bg:           #f8f9fa;
+  --bg2:          #f1f3f5;
+  --bg3:          #e9ecef;
+  --bg4:          #dee2e6;
+  --bg5:          #ced4da;
+  --bg6:          #adb5bd;
+  --text:         #212529;
+  --text2:        #343a40;
+  --text3:        #495057;
+  --text4:        #6c757d;
+  --text5:        #868e96;
+  --border:       rgba(0,0,0,0.1);
+  --primary:      #00b4d8; /* Light Blue */
+  --primary-c:    #00b4d8; 
+  --secondary:    #00b4d8;
+  --tertiary:     #495057;
+  --error:        #d90429;
+  --on-primary:   #ffffff;
+
+  --shade-glass:  rgba(255, 255, 255, 0.72);
+  --shade-border: rgba(0, 0, 0, 0.06);
 }
 
 html, body { height: 100%; }
@@ -53,10 +83,10 @@ input, textarea, select { font-family: 'Manrope', sans-serif; }
 }
 
 .glass {
-  background: rgba(22, 15, 45, 0.72);
+  background: var(--shade-glass);
   backdrop-filter: blur(24px) saturate(150%);
   -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--shade-border);
   position: relative;
   overflow: hidden;
 }
@@ -71,8 +101,8 @@ input, textarea, select { font-family: 'Manrope', sans-serif; }
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #bc13fe, #00e5ff);
-  color: #ffffff;
+  background: var(--primary);
+  color: var(--on-primary);
   border: none;
   font-family: 'Manrope', sans-serif;
   font-weight: 700;

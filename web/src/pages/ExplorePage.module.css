@@ -74,13 +74,13 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(188, 19, 254,0.15);
-  border: 1px solid rgba(188, 19, 254,0.3);
+  background: var(--shade-glass);
+  border: 1px solid var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #bc13fe;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -88,8 +88,8 @@
   position: absolute;
   left: 16px;
   bottom: 16px;
-  background: rgba(7, 5, 15,0.88);
-  border: 1px solid rgba(188, 19, 254,0.2);
+  background: var(--shade-glass);
+  border: 1px solid var(--primary);
   border-radius: var(--radius-full);
   padding: 6px 12px;
   display: flex;
@@ -100,16 +100,16 @@
 }
 
 .radiusLabel { font-size: 11px; color: var(--text4); font-weight: 600; letter-spacing: 0.5px; }
-.radiusVal   { font-size: 13px; color: #bc13fe; font-weight: 700; }
+.radiusVal   { font-size: 13px; color: var(--primary); font-weight: 700; }
 .radiusBtns  { display: flex; gap: 4px; }
 
 .radiusStep {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(188, 19, 254,0.15);
-  border: 1px solid rgba(188, 19, 254,0.3);
-  color: #bc13fe;
+  background: var(--shade-border);
+  border: 1px solid var(--primary);
+  color: var(--primary);
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -140,9 +140,9 @@
 }
 
 .tabActive {
-  background: rgba(188, 19, 254,0.15);
-  border-color: rgba(188, 19, 254,0.4);
-  color: #bc13fe;
+  background: var(--shade-glass);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .manualInput {
@@ -170,10 +170,10 @@
 
 .goBtn {
   padding: 6px 14px;
-  background: linear-gradient(135deg, #bc13fe, #00e5ff);
+  background: var(--primary);
   border: none;
   border-radius: var(--radius-full);
-  color: #ffffff;
+  color: var(--on-primary);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -224,8 +224,8 @@
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: rgba(188, 19, 254,0.1);
-  border: 1px solid rgba(188, 19, 254,0.2);
+  background: var(--shade-border);
+  border: 1px solid var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -271,15 +271,15 @@
   gap: 3px;
 }
 
-.badgeDist    { background: rgba(188, 19, 254,0.1);   color: #bc13fe;  border: 1px solid rgba(188, 19, 254,0.2);   }
-.badgeMembers { background: rgba(221,194,162,0.08); color: var(--text4); border: 1px solid rgba(221,194,162,0.1); }
-.badgeType    { background: rgba(255,222,86,0.08);  color: #00ffb3;  border: 1px solid rgba(255,222,86,0.15);  }
-.badgeAlert   { background: rgba(255,80,80,0.1);    color: #ff6b6b;  border: 1px solid rgba(255,80,80,0.2);    }
-.badgeExpires { background: rgba(88,66,53,0.2);     color: var(--text5); border: 1px solid rgba(88,66,53,0.3);    }
+.badgeDist    { background: var(--shade-glass);   color: var(--primary);  border: 1px solid var(--primary);   }
+.badgeMembers { background: var(--shade-border); color: var(--text4); border: 1px solid var(--border); }
+.badgeType    { background: var(--shade-border);  color: var(--primary);  border: 1px solid var(--primary);  }
+.badgeAlert   { background: var(--shade-border);    color: var(--error);  border: 1px solid var(--error);    }
+.badgeExpires { background: var(--shade-border);     color: var(--text5); border: 1px solid var(--border);    }
 
 .healthBar  { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.04); }
-.healthFill { height: 100%; }
+.healthFill { height: 100%; background: var(--primary); }
 
 .emptyState { text-align: center; padding: 40px 20px; color: var(--text5); font-size: 13px; line-height: 1.8; }
 .loading    { text-align: center; padding: 20px; color: var(--text4); font-size: 13px; }
-.error      { margin: 0 16px 12px; padding: 10px 14px; background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); border-radius: var(--radius-md); color: #ff6b6b; font-size: 13px; }
+.error      { margin: 0 16px 12px; padding: 10px 14px; background: var(--bg3); border: 1px solid var(--error); border-radius: var(--radius-md); color: var(--error); font-size: 13px; }

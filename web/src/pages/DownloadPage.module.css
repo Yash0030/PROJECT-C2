@@ -1,0 +1,92 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px); /* Assuming header height */
+  padding: 2rem;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.content {
+  max-width: 600px;
+  text-align: center;
+  padding: 3rem;
+  background: var(--bg-surface-elevated, #1a1a1a);
+  border-radius: 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--accent-primary, #4caf50);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 300px;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.downloadButton:hover {
+  transform: translateY(-2px);
+  background-color: var(--accent-primary-hover, #45a049);
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+.btnText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.small {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.large {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.iosInstruction {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #333);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}

@@ -11,6 +11,7 @@ import GhostPage     from './pages/GhostPage.jsx';
 import Layout        from './components/Layout.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import AuthPage      from './pages/AuthPage.jsx';
+import DownloadPage  from './pages/DownloadPage.jsx';
 
 export default function App() {
   const { isReady, init, user } = useSessionStore();
@@ -23,6 +24,7 @@ export default function App() {
     <Routes>
       {/* Always accessible */}
       <Route path="/auth" element={<AuthPage />} />
+      <Route path="/download" element={<DownloadPage />} />
 
       {/* Protected — redirect to /auth if not logged in */}
       <Route element={user ? <Layout /> : <Navigate to="/auth" replace />}>

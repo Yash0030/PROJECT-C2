@@ -58,8 +58,8 @@
 .joinTitle { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 .joinSub { font-size: 13px; color: var(--text4); line-height: 1.6; }
 .ghostReq {
-  font-size: 12px; color: #00ffb3;
-  background: rgba(229,193,0,0.10);
+  font-size: 12px; color: var(--primary);
+  background: var(--shade-border);
   padding: 8px 12px; border-radius: var(--radius-md);
   font-weight: 600;
 }
@@ -133,12 +133,11 @@
 /* Own bubble */
 .bubbleOutGroup { display: flex; flex-direction: column; align-items: flex-end; max-width: 82%; align-self: flex-end; gap: 4px; }
 .bubbleOut {
-  background: linear-gradient(135deg, #bc13fe, #00e5ff);
+  background: var(--primary);
   border-radius: 16px 16px 4px 16px;
   padding: 10px 13px;
-  font-size: 14px; color: #ffffff; font-weight: 600; line-height: 1.55;
+  font-size: 14px; color: var(--on-primary); font-weight: 600; line-height: 1.55;
   word-break: break-word;
-  box-shadow: 0 8px 20px rgba(188, 19, 254,0.15);
 }
 .bubbleOutTime { font-size: 9px; color: var(--text5); margin-right: 4px; font-weight: 600; }
 
@@ -155,7 +154,7 @@
 .typingRow { display: flex; align-items: center; gap: 8px; padding: 0 4px; }
 .typingDots { display: flex; gap: 3px; }
 .typingDot {
-  width: 6px; height: 6px; border-radius: 50%; background: rgba(255,182,139,0.4);
+  width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
   animation: pulse 1.2s ease-in-out infinite;
 }
 .typingDot:nth-child(2) { animation-delay: 0.2s; }
@@ -163,7 +162,7 @@
 @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
 .typingLabel { font-size: 10px; font-weight: 700; color: var(--text5); text-transform: uppercase; letter-spacing: 0.18em; }
 
-.chatError { padding: 6px 16px; font-size: 12px; color: var(--error); background: rgba(255, 0, 85,0.15); }
+.chatError { padding: 6px 16px; font-size: 12px; color: var(--error); background: var(--shade-border); }
 
 /* Input row */
 .inputRow {
@@ -194,6 +193,5 @@
   width: 40px; height: 40px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 0 14px rgba(188, 19, 254,0.4);
 }
 .sendBtn:disabled { opacity: 0.4; box-shadow: none; }
